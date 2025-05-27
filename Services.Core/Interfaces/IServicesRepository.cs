@@ -1,0 +1,11 @@
+﻿using Services.Core.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Services.Core.Interfaces
+{
+    public interface IServicesRepository : IRepository<Service> { }
+}
