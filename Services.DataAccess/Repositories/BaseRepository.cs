@@ -35,7 +35,7 @@ namespace Services.DataAccess.Repositories
             await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<ICollection<T>> GetAllAsync(Expression<Func<T, bool>> predicate, PaginationModel model, CancellationToken cancellationToken)
+        public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>> predicate, PaginationModel model, CancellationToken cancellationToken)
         {
             return await _dbSet
                 .AsNoTracking()
