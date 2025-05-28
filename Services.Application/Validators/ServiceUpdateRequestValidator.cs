@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Services.Application.Validators
 {
-    public class ServiceUpdateRequestValidator : AbstractValidator<ServiceCreateRequest>
+    public class ServiceUpdateRequestValidator : AbstractValidator<ServiceUpdateRequest>
     {
         public ServiceUpdateRequestValidator()
         {
