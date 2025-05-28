@@ -17,13 +17,15 @@ namespace Services.Application.Services
         private readonly IServicesRepository _servicesRepository;
         private readonly IValidator<ServiceCreateRequest> _createValidator;
         private readonly IValidator<ServiceUpdateRequest> _updateValidator;
+        private readonly IValidator<PaginationModel> _pageValidator;
 
         public ServiceService(IServicesRepository servicesRepository, IValidator<ServiceCreateRequest> createValidator,
-            IValidator<ServiceUpdateRequest> updateValidator)
+            IValidator<ServiceUpdateRequest> updateValidator, IValidator<PaginationModel> pageValidator)
         {
             _servicesRepository = servicesRepository;
             _createValidator = createValidator;
             _updateValidator = updateValidator;
+            _pageValidator = pageValidator;
         }
 
         public async Task CreateAsync(ServiceCreateRequest model, CancellationToken cancellationToken)
@@ -43,6 +45,8 @@ namespace Services.Application.Services
 
         public async Task<List<Service>> GetAllAsync(PaginationModel model, CancellationToken cancellationToken)
         {
+            await _pageValidator.ValidateAndThrowAsync(model, cancellationToken);
+
             return await _servicesRepository.GetAllAsync(x => true, model, cancellationToken);
         }
 
@@ -55,11 +59,15 @@ namespace Services.Application.Services
 
         public async Task<List<Service>> GetByCategoryAsync(Guid categoryId, PaginationModel model, CancellationToken cancellationToken)
         {
+            await _pageValidator.ValidateAndThrowAsync(model, cancellationToken);
+
             return await _servicesRepository.GetAllAsync(x => x.CategoryId == categoryId, model, cancellationToken);    
         }
 
         public async Task UpdateAsync(Guid id, ServiceUpdateRequest model, CancellationToken cancellationToken)
         {
+            await _updateValidator.ValidateAndThrowAsync(model, cancellationToken);
+
             var entity = await GetAsync(id, cancellationToken);
 
             entity.Name = model.Name;

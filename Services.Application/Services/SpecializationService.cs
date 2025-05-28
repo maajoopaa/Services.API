@@ -16,14 +16,16 @@ namespace Services.Application.Services
     {
         private readonly ISpecializationsRepository _specializationsRepository;
         private readonly IServiceService _serviceService;
+        private readonly IValidator<PaginationModel> _pageValidator;
         private readonly IValidator<SpecializationCreateRequest> _createValidator;
         private readonly IValidator<SpecializationUpdateRequest> _updateValidator;
 
         public SpecializationService(ISpecializationsRepository specializationsRepository, IValidator<SpecializationCreateRequest> createValidator,
-            IValidator<SpecializationUpdateRequest> updateValidator, IServiceService serviceService)
+            IValidator<SpecializationUpdateRequest> updateValidator, IServiceService serviceService, IValidator<PaginationModel> pageValidator)
         {
             _specializationsRepository = specializationsRepository;
             _serviceService = serviceService;
+            _pageValidator = pageValidator;
             _createValidator = createValidator;
             _updateValidator = updateValidator;
         }
@@ -45,6 +47,8 @@ namespace Services.Application.Services
 
         public async Task<List<Specialization>> GetAllAsync(PaginationModel model, CancellationToken cancellationToken)
         {
+            await _pageValidator.ValidateAndThrowAsync(model, cancellationToken);
+
             return await _specializationsRepository.GetAllAsync(x => true, model,cancellationToken);
         }
 
@@ -57,6 +61,8 @@ namespace Services.Application.Services
 
         public async Task UpdateAsync(Guid id, SpecializationUpdateRequest model, CancellationToken cancellationToken)
         {
+            await _updateValidator.ValidateAndThrowAsync(model, cancellationToken);
+
             var entity = await GetAsync(id, cancellationToken);
 
             entity.Name = model.Name;
