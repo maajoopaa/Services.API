@@ -12,7 +12,9 @@ namespace Services.Application.Validators
     {
         public ServiceUpdateRequestValidator()
         {
-            
+            RuleFor(x => x.Name).NotEmpty().WithMessage("name cannot be empty");
+            RuleFor(x => x.CategoryId).NotEmpty().WithMessage("category cannot be empty");
+            RuleFor(x => x.Price).GreaterThan(0).WithMessage("price cannot be less than 0");
         }
     }
 }

@@ -12,7 +12,8 @@ namespace Services.Application.Validators
     {
         public SpecializationUpdateRequestValidator()
         {
-            
+            RuleFor(x => x.Name).NotEmpty().WithMessage("name cannot be empty");
+            RuleFor(x => x.ServiceIds).NotNull().WithMessage("services cannot be empty");
         }
     }
 }
