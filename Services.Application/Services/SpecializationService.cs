@@ -1,4 +1,6 @@
 ﻿using FluentValidation;
+using Serilog;
+using Serilog.Core;
 using Services.Application.Exceptions;
 using Services.Application.Interfaces;
 using Services.Application.Models;
@@ -43,6 +45,8 @@ namespace Services.Application.Services
             await _specializationsRepository.AddAsync(entity, cancellationToken);
 
             await _serviceService.UpdateSpecializationAsync(model.ServiceIds, entity.Id, cancellationToken);
+
+            Log.Information("specialization has been created");
         }
 
         public async Task<List<Specialization>> GetAllAsync(PaginationModel model, CancellationToken cancellationToken)
@@ -71,6 +75,8 @@ namespace Services.Application.Services
             await _serviceService.UpdateSpecializationAsync(model.ServiceIds, id, cancellationToken);
 
             await _specializationsRepository.UpdateAsync(entity, cancellationToken);
+
+            Log.Information("specialization has been updated");
         }
 
         public async Task UpdateStatusAsync(Guid id, bool isActive, CancellationToken cancellationToken)
@@ -80,6 +86,8 @@ namespace Services.Application.Services
             entity.IsActive = isActive;
 
             await _specializationsRepository.UpdateAsync(entity, cancellationToken);
+
+            Log.Information("specialization status has been created");
         }
     }
 }

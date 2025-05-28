@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Serilog;
 using Services.Application.Exceptions;
 using Services.Application.Interfaces;
 using Services.Application.Models;
@@ -41,6 +42,8 @@ namespace Services.Application.Services
             };
 
             await _servicesRepository.AddAsync(service,cancellationToken);
+
+            Log.Information("service has been created");
         }
 
         public async Task<List<Service>> GetAllAsync(PaginationModel model, CancellationToken cancellationToken)
@@ -76,6 +79,8 @@ namespace Services.Application.Services
             entity.IsActive = model.IsActive;
 
             await _servicesRepository.UpdateAsync(entity, cancellationToken);
+
+            Log.Information("service has been updated");
         }
 
         public async Task UpdateSpecializationAsync(List<Guid> ids, Guid specializationId, CancellationToken cancellationToken)
@@ -88,6 +93,8 @@ namespace Services.Application.Services
 
                 await _servicesRepository.UpdateAsync(entity, cancellationToken);
             }
+
+            Log.Information("services has been updated");
         }
 
         public async Task UpdateStatusAsync(Guid id, bool isActive, CancellationToken cancellationToken)
@@ -97,6 +104,8 @@ namespace Services.Application.Services
             entity.IsActive = isActive;
 
             await _servicesRepository.UpdateAsync(entity, cancellationToken);
+
+            Log.Information("service status has been updated");
         }
     }
 }
