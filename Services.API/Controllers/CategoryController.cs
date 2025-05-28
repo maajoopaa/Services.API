@@ -6,7 +6,7 @@ using Services.Core.Models;
 namespace Services.API.Controllers
 {
     [ApiController]
-    [Route("catrgory")]
+    [Route("category")]
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryService _categoryService;
